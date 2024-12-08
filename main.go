@@ -351,5 +351,10 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	json.NewEncoder(w).Encode(response)
-	fmt.Printf("The guest %v deleted successfully\n", name)
+	successMessage := fmt.Sprintf("The gift from '%v' was deleted successfully.", name)
+	err = notifyslack.sendToSlack(successMessage)
+	if err != nil {
+		log.Println("Error sending message to Slack:", err)
+	}
+
 }
